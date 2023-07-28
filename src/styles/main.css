@@ -1,0 +1,122 @@
+align-right {
+  display: flex !important;
+  justify-content: right !important;
+}
+
+/* @media screen and (min-device-width: 481px) and (max-device-width: 768px) */
+@media screen and (min-device-width: 320px) and (max-device-width: 425px) {
+
+  .css- wtwxqg-MuiInputBase-root-MuiOutlinedInput-root,
+  .css-19x9e5m-MuiFormLabel-root-MuiInputLabel-root,
+  .css-152mnda-MuiInputBase-input-MuiOutlinedInput-input,
+  .css-wgu2jy-MuiTypography-root,
+  .css-a62o0h-MuiTypography-root,
+  .css-nyt6v2-MuiFormHelperText-root.Mui-error,
+  .css-n7dg2e-MuiTypography-root,
+  .css-1yn5wz2-MuiTypography-root,
+  .css-11pevy2-MuiTypography-root,
+  .css-1jbbcbn-MuiDataGrid-columnHeaderTitle,
+  .css-j578ci-MuiTablePagination-displayedRows,
+  .css-1u9a620-MuiButtonBase-root-MuiButton-root,
+  .css-jpmsp-MuiButtonBase-root-MuiButton-root,
+  .css-2j3g47-MuiInputBase-root .MuiInputBase-input,
+  .css-1ia98p6-MuiTypography-root,
+  .css-1an9g1f-MuiButtonBase-root-MuiTab-root,
+  .css-1h1y8ta-MuiTypography-root,
+  .css-lfikje-MuiTypography-root,
+  .css-1ex6mm8-MuiButtonBase-root-MuiButton-root,
+  .css-1pxa9xg-MuiAlert-message,
+  .css-vst5p3-MuiTypography-root,
+  .css-1vd8smb-MuiTypography-root,
+  .css-28m2xe-MuiButtonBase-root-MuiButton-root,
+  .css-srufkx-MuiButtonBase-root-MuiButton-root,
+  .css-1nab1yr-MuiTypography-root,
+  .css-m85d8i-MuiInputBase-root-MuiOutlinedInput-root,
+  .css-hchtlu-MuiTypography-root,
+  .css-hrr88p-MuiButtonBase-root-MuiButton-root,
+  .css-fxkopw-MuiButtonBase-root-MuiButton-root {
+    font-size: 1.5rem;
+  }
+
+  .css-rtrcn9-MuiTablePagination-root .MuiTablePagination-selectLabel {
+    font-size: 1.4rem !important;
+  }
+
+  .css-aqov09-MuiPaper-root-MuiAppBar-root {
+    width: calc(100% - 0rem);
+  }
+
+  .css-16qwsuw {
+    margin-left: -9rem;
+  }
+
+  .css-n7dg2e-MuiTypography-root {
+    display: none;
+  }
+
+  .css-1hsz34s-MuiDrawer-docked .MuiDrawer-paper {
+    width: 6rem;
+  }
+
+  .Btn {
+    display: none;
+  }
+
+  .Logo {
+    display: none;
+  }
+
+  .css-576xtl-MuiButtonBase-root-MuiIconButton-root {
+    display: none;
+  }
+
+  .css-16qwsuw {
+    min-width: calc(100vw - 5rem - 20px);
+  }
+
+  .css-mhc70k-MuiGrid-root {
+    width: calc(100% + 38rem);
+  }
+
+  .css-kdux38-MuiTypography-root {
+    top: -4rem;
+    left: 29rem;
+    font-size: 1.5rem;
+  }
+
+  .css-hrr88p-MuiButtonBase-root-MuiButton-root {
+    max-width: 43rem;
+  }
+
+  .pass_icon {
+    width: 1.6rem;
+    height: 3rem;
+  }
+
+  .login_icon {
+    width: 2.5rem;
+    height: 3rem;
+  }
+
+  .email-helper-text {
+    font-size: 1.5rem !important;
+  }
+}
+
+.css-1hbd3g7 {
+  height: 140px;
+}
+
+.single-file-image {
+  height: 129px;
+}
+
+.swal2-backdrop-custom {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px); /* Adjust the blur intensity as needed */
+  pointer-events: none; /* Prevent interaction with the blurred background */
+}
