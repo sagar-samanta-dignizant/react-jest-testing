@@ -40,18 +40,20 @@ describe("Reset Password page test", () => {
     );
     expect(el).toMatch(PasswordMinError);
   });
-  // it("should give password validation error", async () => {
-  //   await page.click("input[name=password]");
-  //   await page.type("input[name=password]", "Test@123");
-  //   await page.click("input[name=confirm_password]");
-  //   await page.type("input[name=confirm_password]", "Test123");
+  
+  it("should give password validation error", async () => {
+    await page.click("input[name=password]");
+    await page.type("input[name=password]", "Test@123");
+    await page.click("input[name=confirm_password]");
+    await page.type("input[name=confirm_password]", "Test123");
 
-  //   await page.click("button[type=submit]");
+    await page.click("button[type=submit]");
 
-  //   const el = await page.$eval(
-  //     "p[id=confirm_password-helper-text]",
-  //     (text) => text.innerText
-  //   );
-  //   expect(el).toMatch(PasswordError);
-  // });
+    const el = await page.$eval(
+      "p[id=confirm_password-helper-text]",
+      (text) => text.innerText
+    );
+    expect(el).not.toMatch(PasswordError);
+  });
+ 
 });

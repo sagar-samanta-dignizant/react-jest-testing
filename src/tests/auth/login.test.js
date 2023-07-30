@@ -1,18 +1,15 @@
 /* eslint-disable no-undef */
 const puppeteer = require('puppeteer');
+
 const EmailRequriedError = "Email is required";
 const PasswordMinError = "Min 8 characters required";
 const EmailInvalidError = "Email is invalid";
 const LoginPageInfoText = "Use your email and password to login";
 const ResetPasswordPageInfoText = "Use your email to reset password";
 const ResetNewUser = "Add your company details";
-const InvalidPasswordError =
-  "Password must include uppercase, lowercase, number and special symbol";
-
-
+const InvalidPasswordError = "Password must include uppercase, lowercase, number and special symbol";
 
 describe("Login page test", () => {
-
   beforeEach(async () => {
     await page.goto("http://localhost:3000/login");
   });
@@ -22,10 +19,7 @@ describe("Login page test", () => {
   it("should load login page", async () => {
     // await page.waitForSelector("#email-helper-text", { timeout: 10000 });
     // jest.setTimeout(10000);
-    const loginPageLoadText = await page.$eval(
-      ".email-helper-text",
-      (text) => text.innerText
-    );
+    const loginPageLoadText = await page.$eval(".email-helper-text", (text) => text.innerText);
     expect(loginPageLoadText).toMatch("Use your email and password to login");
   });
 
@@ -35,38 +29,21 @@ describe("Login page test", () => {
 
   it("should redirect to reset password page after forget password button click", async () => {
     await page.click("#resetPasswordBtn");
-
-    const resetPasswordInfoText = await page.$eval(
-      ".ResetPassBtn",
-      (text) => text.innerText
-    );
-
+    const resetPasswordInfoText = await page.$eval(".ResetPassBtn", (text) => text.innerText);
     expect(resetPasswordInfoText).toMatch(ResetPasswordPageInfoText);
   });
 
   it("should redirect to register user page after register as new user button click", async () => {
     await page.click("#registerNewUser");
-
-    const registerNewUser = await page.$eval(
-      ".register-user",
-      (text) => text.innerText
-    );
-
+    const registerNewUser = await page.$eval(".register-user", (text) => text.innerText);
     expect(registerNewUser).toMatch("Add your company details");
   });
 
   it("should give form validation error after login button click without passing email and password", async () => {
     await page.click("button[type=submit]");
 
-    // eslint-disable-next-line no-undef
-    const emailError = await page.$eval(
-      "p[id=email-helper-text]",
-      (text) => text.innerText
-    );
-    const passwordError = await page.$eval(
-      "p[id=password-helper-text]",
-      (text) => text.innerText
-    );
+    const emailError = await page.$eval("p[id=email-helper-text]", (text) => text.innerText);
+    const passwordError = await page.$eval("p[id=password-helper-text]", (text) => text.innerText);
     expect(emailError).toMatch(EmailRequriedError);
     expect(passwordError).toMatch(PasswordMinError);
   });
@@ -84,15 +61,9 @@ describe("Login page test", () => {
 
     await page.click("button[type=submit]");
 
-    const el = await page.$eval(
-      "p[id=email-helper-text]",
-      (text) => text.innerText
-    );
+    const el = await page.$eval("p[id=email-helper-text]", (text) => text.innerText);
     expect(el).toMatch(EmailInvalidError);
-    const le = await page.$eval(
-      "p[id=password-helper-text]",
-      (text) => text.innerText
-    );
+    const le = await page.$eval("p[id=password-helper-text]", (text) => text.innerText);
     expect(le).toMatch(InvalidPasswordError);
   });
 
@@ -109,10 +80,7 @@ describe("Login page test", () => {
 
     await page.click("button[type=submit]");
 
-    const el = await page.$eval(
-      "p[id=password-helper-text]",
-      (text) => text.innerText
-    );
+    const el = await page.$eval("p[id=password-helper-text]", (text) => text.innerText);
     expect(el).toMatch(PasswordMinError);
   });
 
@@ -125,10 +93,7 @@ describe("Login page test", () => {
 
     await page.click("button[type=submit]");
 
-    const el = await page.$eval(
-      "p[id=password-helper-text]",
-      (text) => text.innerText
-    );
+    const el = await page.$eval("p[id=password-helper-text]", (text) => text.innerText);
     expect(el).toMatch(InvalidPasswordError);
   });
 
@@ -153,7 +118,6 @@ describe("Login page test", () => {
       throw new Error("Login failed! Could not redirect to OTP page.");
     }
   }, 10000);
-
 
   // === PASSWORD FIELD VALIDATION TEST CASES END === //
 });

@@ -29,7 +29,7 @@ describe("OTP page test", () => {
             ".otp-Page",
             (text) => text.innerText
         );
-        expect(OtpPageLoadText).toMatch(OtpRequiredSms);
+        expect(OtpPageLoadText).toMatch(/Use your SMS CODE to login/i);
     });
 });
 
@@ -42,7 +42,7 @@ describe("OTP page test", () => {
             (text) => text.innerText
         );
 
-        expect(ResendSMSCODE).toMatch("Use your SMS CODE to login");
+        expect(ResendSMSCODE).toMatch(/Use your SMS CODE to login/i);
     });
 
     // it("on resend if otp doesn't matches", async () => {

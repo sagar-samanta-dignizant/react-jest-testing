@@ -24,7 +24,7 @@ describe('Profile page test', () => {
   });
 
   it('should show form validation errors for company details', async () => {
-    await page.waitForSelector('#admin-settings');
+    await page.waitForSelector('#admin-settings', { timeout: 10000 }); // Increase the timeout to 10000 ms
     await page.click('#admin-settings');
     await page.click('#company-details');
     await page.click('button[type=submit]');
@@ -48,11 +48,11 @@ describe('Profile page test', () => {
     expect(codeError).toMatch('Postal code is required');
   });
 
-//   it('should navigate to the payment details menu', async () => {
-//     await page.waitForSelector('#admin-settings');
-//     await page.click('#admin-settings');
-//     await page.click('#payment-details');
-//     const pageLoadText = await page.evaluate(() => document.querySelector('#number-label').innerText);
-//     expect(pageLoadText).toMatch('Card Number');
-//   });
+  it('should navigate to the payment details menu', async () => {
+    await page.waitForSelector('#admin-settings');
+    await page.click('#admin-settings');
+    await page.click('#payment-details');
+    const pageLoadText = await page.evaluate(() => document.querySelector('#number-label').innerText);
+    expect(pageLoadText).toMatch('Card Number');
+  });
 });

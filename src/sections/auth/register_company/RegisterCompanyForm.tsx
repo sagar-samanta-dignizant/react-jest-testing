@@ -297,6 +297,8 @@ function RegisterCompanyForm() {
         <Stack spacing={2} direction="row" justifyContent="space-between">
           <Button
             variant="text"
+            id='BackButton'
+            name='BackButton'
             size="large"
             fullWidth
             onClick={() => setActiveStep(activeStep - 1)}
