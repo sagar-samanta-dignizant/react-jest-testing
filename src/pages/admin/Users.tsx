@@ -463,7 +463,7 @@ export default function Users() {
                 />
                 <Button
                   size="small"
-                  id="userButton"
+                  id="resetUserButton"
                   onClick={resetData}
                   variant="outlined"
                 >

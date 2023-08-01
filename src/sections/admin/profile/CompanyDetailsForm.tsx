@@ -29,7 +29,7 @@ export default function CompanyDetailsFormBk(props: any) {
   const getProfile = async () => {
     const formData = new FormData()
     formData.append('companyId', user.companyId)
-    const profile = await settingsService.getProfile(user.companyId._id, "company");
+    const profile = await settingsService.getProfile(user.companyId?._id, "company");
     setImage(profile);
   };
 
