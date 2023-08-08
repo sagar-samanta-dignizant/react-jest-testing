@@ -18,6 +18,6 @@ module.exports = async () => {
       "^.+\\.tsx?$": "babel-jest"
     },
     moduleFileExtensions: ["js", "mjs"],
-    transformIgnorePatterns: ["/node_modules/(?!(mui-tel-input)/)"]
+    transformIgnorePatterns: ["/node_modules/(?!(mui-tel-input)/)"]    
   };
 };

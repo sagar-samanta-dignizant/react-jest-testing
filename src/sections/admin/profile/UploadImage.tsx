@@ -36,7 +36,7 @@ const HeadingTypography = styled(Typography)<TypographyProps>(({ theme }) => ({
 }))
 
 const ImageUploader = (props: any) => {
-  console.log(props)
+  // console.log(props)
   // ** State
   const [files, setFiles] = useState<File[]>([])
   useEffect(() => {
@@ -72,7 +72,7 @@ const ImageUploader = (props: any) => {
           key={file.name}
           alt={file.name}
           className="single-file-image"
-          src={URL.createObjectURL(file as any)}
+          src={URL?.createObjectURL(file as any)}
           style={{ width: '150px' }}
         
         />
@@ -85,7 +85,7 @@ const ImageUploader = (props: any) => {
         {...getRootProps({ className: 'dropzone' })}
         sx={acceptedFiles.length ? { height: 250 } : {}}
       >
-        <input {...getInputProps()} required/>
+        <input data-testid="upload-image" {...getInputProps()} required/>
 
         <Box
           sx={{

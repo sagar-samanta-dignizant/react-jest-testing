@@ -29,21 +29,21 @@ export default function EditUser(props) {
   React.useEffect(() => {
     debugger
     if (selectedUser && selectedUser !== '') {
-      console.log(selectedUser);
-      const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key;
-      const model_key = JSON.parse(localStorage.getItem("user"))?.model_key;
-      const model_password = JSON.parse(localStorage.getItem("user"))?.model_password;
-      const intermitent_key = encrypt(model_key, model_password).encrypted
-      const master_key = decrypt(intermitent_key, headset_key)
+      // console.log(selectedUser);
+      const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key || "";
+      const model_key = JSON.parse(localStorage.getItem("user"))?.model_key || "";
+      const model_password = JSON.parse(localStorage.getItem("user"))?.model_password || "";
+      const intermitent_key = (model_key && model_password) ? encrypt(model_key, model_password).encrypted : ""
+      const master_key =(intermitent_key && headset_key) ? decrypt(intermitent_key, headset_key) : ""
       setValue('email', selectedUser?.email)
       setValue('firstName', decrypt(master_key, selectedUser?.full_name?.split(' ')[0]))
       // setValue('lastName', selectedUser?.full_name?.split(' ')[1])
       // setValue('displayName', selectedUser?.display_name)
-      setValue('phoneNo',decrypt(master_key,  selectedUser?.phone_no))
+      setValue('phoneNo', decrypt(master_key, selectedUser?.phone_no))
       // setValue('role', selectedUser?.role)
 
       setImage(selectedUser?.avatar)
-      console.log(image);
+      // console.log(image);
     }
   }, [props])
 
@@ -87,7 +87,7 @@ export default function EditUser(props) {
   } = methods;
 
 
-  
+
   const onSubmit = async (data: TUserDetailsFormData) => {
     debugger
     editUser(data);
@@ -95,7 +95,7 @@ export default function EditUser(props) {
 
   const theme = useTheme();
   const isError = (fieldname: string) =>
-  errors[fieldname] ? theme.palette.error.light : theme.palette.primary.main;
+    errors[fieldname] ? theme.palette.error.light : theme.palette.primary.main;
 
   return (
     <>
@@ -124,18 +124,18 @@ export default function EditUser(props) {
                 />
               </Spacer>
               <FormInputField
-            name="phoneNo"
-            label="Mobile No *"
-            type="text"
-            placeholder="Mobile No"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <IconTelephone color={isError("phoneNo")} />
-                </InputAdornment>
-              ),
-            }}
-          />
+                name="phoneNo"
+                label="Mobile No *"
+                type="text"
+                placeholder="Mobile No"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <IconTelephone color={isError("phoneNo")} />
+                    </InputAdornment>
+                  ),
+                }}
+              />
               {/* <MuiTelInput
                 fullWidth
                 name="phoneNo"
@@ -169,11 +169,11 @@ export default function EditUser(props) {
                   ),
                 }}
               />
-              <ImageUploader image={image} uploadFile={uploadFile}/>
-              <Button variant="contained" onClick={() => resetPassword()}>
+              <ImageUploader image={image} uploadFile={uploadFile} />
+              <Button variant="contained" data-testid="reset-password-button"  onClick={() => resetPassword()}>
                 Reset Password
               </Button>
-              <Button variant="contained" type="submit">
+              <Button variant="contained" data-testid="edit" type="submit">
                 Edit
               </Button>
             </Spacer>

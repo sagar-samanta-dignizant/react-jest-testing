@@ -5,7 +5,7 @@ export default function Alert(props: any) {
   return <SweetAlert2  didOpen =
   {() => {
     const blurElement = document.createElement('div');
-    blurElement.classList.add('blur-background');
+    // blurElement.classList.add('blur-background');
     document.body.appendChild(blurElement);
   }}  {...props.swalProps} {...props} />
 }

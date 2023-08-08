@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [pageAdmin, setPageAdmin] = React.useState(0)
   const [rowsCountAdmin, setRowsCountAdmin] = React.useState(0)
   const [selectedUser, setSelectedUser] = React.useState<any>({});
-  const [approveEmail,setApproveEmail] = React.useState({
+  const [approveEmail, setApproveEmail] = React.useState({
     isActive: false,
     row: '',
   })
@@ -47,15 +47,15 @@ export default function Dashboard() {
   const [open, setOpen] = React.useState(false);
   //use to navigate to different page
   const navigate = useNavigate()
-  
-  const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key;
-  const model_key = JSON.parse(localStorage.getItem("user"))?.model_key;
-  const model_password = JSON.parse(localStorage.getItem("user"))?.model_password;
-  const  intermitent_key = encrypt( model_key, model_password).encrypted
-  const master_key = decrypt(intermitent_key, headset_key)
+
+  const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key || "";
+  const model_key = JSON.parse(localStorage.getItem("user"))?.model_key || "";
+  const model_password = JSON.parse(localStorage.getItem("user"))?.model_password || "";
+  const intermitent_key = (model_key && model_password) ? encrypt(model_key, model_password).encrypted : ""
+  const master_key = (intermitent_key && headset_key) ? decrypt(intermitent_key, headset_key) : ""
 
   //This column shows the email of the user who performed the activity. The value is extracted from the createdId property of the row and rendered using a Typography component. The noWrap prop is used to prevent the email from being wrapped if it's too long.
-  async function addPassword(ctx,approveEmail) {
+  async function addPassword(ctx, approveEmail) {
     debugger
     const hashedPassword = singleHash(ctx.password)
     const { isError, message } = await usersService.addPassword(ctx.customer_id, hashedPassword, approveEmail);
@@ -94,12 +94,12 @@ export default function Dashboard() {
       renderCell: ({ row }: any) => {
         return (
           <Typography noWrap>
-             {decrypt(master_key, row.createdId.display_name_encrypted)}
+            {decrypt(master_key, row.createdId.display_name_encrypted)}
           </Typography>
         );
       },
     },
-    
+
     {
       flex: 0.2,
       minWidth: 150,
@@ -151,28 +151,27 @@ export default function Dashboard() {
           <Stack rowGap={2} direction="row">
             <Button
               color="success"
-              onClick= {() => 
-                {
-                  handleOpen()
-                  // approveRequest(row, false)
+              onClick={() => {
+                handleOpen()
+                // approveRequest(row, false)
                 // setApproveEmail(row,true)
-                setApproveEmail(prevState => ({ ...prevState, isActive: true, row: row}));
-                }  
+                setApproveEmail(prevState => ({ ...prevState, isActive: true, row: row }));
+              }
               }
             >
               Approve
             </Button>
             <Button
               color="error"
-              onClick={() => 
-                // setApproveEmail(true)
-                {
-                  handleClose()
-                  setApproveEmail(prevState => ({ ...prevState, isActive: false, row: row}));
-                }  
+              onClick={() =>
+              // setApproveEmail(true)
+              {
+                handleClose()
+                setApproveEmail(prevState => ({ ...prevState, isActive: false, row: row }));
               }
-                // approveRequest(row, false)
-                // setApproveEmail(false)
+              }
+            // approveRequest(row, false)
+            // setApproveEmail(false)
             >
               Reject
             </Button>
@@ -187,7 +186,7 @@ export default function Dashboard() {
 
     if (!user) {
       debugger
-      window.location.reload();
+      // window.location.reload();
       navigate("/", { replace: true })
     }
     //The function uses the homeService.getAdminTaskList() method which takes two parameters, pageAdmin and pageSizeAdmin, to fetch the data.
@@ -202,14 +201,14 @@ export default function Dashboard() {
 
   //After receiving the response, it sets the adminTask, rowsCountAdmin, and isLoadingAdmin states using the response data.
   const getAdminTaskDetails = () => {
-    homeService.getAdminTaskList(pageAdmin, pageSizeAdmin).then((res) => {
+    homeService.getAdminTaskList(pageAdmin, pageSizeAdmin)?.then((res) => {
       setAdminTask(res?.list ?? [])
       setRowsCountAdmin(res?.count ?? 0)
       setIsLoadingAdmin(false)
     })
   }
   const getUserTaskDetails = () => {
-    homeService.getUsersTaskList(pageUser, pageSizeUser).then((res) => {
+    homeService.getUsersTaskList(pageUser, pageSizeUser)?.then((res) => {
       setUserTask(res?.list ?? [])
       setIsLoadingUser(false)
       setRowsCountUser(res?.count ?? 0)
@@ -217,7 +216,7 @@ export default function Dashboard() {
   }
   const getLogTaskDetails = () => {
     debugger
-    homeService.getLogTaskList(pageUserLog, pageSizeUserLog).then((res) => {
+    homeService.getLogTaskList(pageUserLog, pageSizeUserLog)?.then((res) => {
       setUserLog(res?.list ?? [])
       setIsLoadingUserLog(false)
       setRowsCountUserLog(res?.count ?? 0)
@@ -264,11 +263,11 @@ export default function Dashboard() {
   }
 
   const passData = (data) => {
-    approveRequest(approveEmail,data)
+    approveRequest(approveEmail, data)
   }
-  const approveRequest = (approveEmail,data) => {
+  const approveRequest = (approveEmail, data) => {
     debugger
-    const hashedPassword = singleHash(data.password); 
+    const hashedPassword = singleHash(data.password);
     const payload = {
       primaryId: approveEmail.row._id,
       page: pageAdmin,
@@ -424,8 +423,8 @@ export default function Dashboard() {
           id="add-user-modal"
         >
           <VerifyEmail
-          selectedUser={selectedUser}
-          onAddPassword={passData} />
+            selectedUser={selectedUser}
+            onAddPassword={passData} />
         </Modal>
         <DrawerComponent
           anchor={'right'}

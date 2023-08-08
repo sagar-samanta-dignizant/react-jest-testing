@@ -25,6 +25,7 @@ type Anchor = "top" | "left" | "bottom" | "right";
 export default function Users() {
   //he useState hook is used to declare the following state variables:
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(0);
   const [rowsCount, setRowsCount] = useState(0);
@@ -41,11 +42,21 @@ export default function Users() {
   const [swalProps, setSwalProps] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>({ right: false });
 
+  const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key || "";
+  const model_key = JSON.parse(localStorage.getItem("user"))?.model_key || "";
+  const model_password = JSON.parse(localStorage.getItem("user"))?.model_password || "";
+  const intermitent_key = (model_key && model_password) ? encrypt(model_key, model_password).encrypted : ""
+  const master_key = (intermitent_key && headset_key) ? decrypt(intermitent_key, headset_key) : ""
+
+
   //The handleOpenHeadSetKey and handleCloseHeadSetKey functions manage the visibility of the dialog box for adding passwords.
   const handleCloseHeadSetKey = () => setShow(false);
   const handleCloseVerifyEmail = () => setSwalProps(false);
   const emailVerify = JSON.parse(localStorage.getItem("user"))?.master_seed;
-  const navigate = useNavigate();
+
+  useEffect(() => {
+
+  }, [])
 
   //The addUser function adds new users to the backend using the addUsers function from the usersService module. It takes an array of emails as input, sends a request to the backend to add them to the database, and updates the user list on success.
   async function addUser(ctx) {
@@ -66,7 +77,7 @@ export default function Users() {
     if (!verify) {
       const { isError, message } = await usersService.sendMailVerificationEmail();
       if (!isError) {
-      
+
       } else {
         toast.error(message);
       }
@@ -105,29 +116,29 @@ export default function Users() {
   //The editUser function edits the details of a user using the editUsers function from the usersService module. It takes a user object as input, sends a request to the backend to edit the user's details, and updates the user list on success.
   async function editUser(ctx) {
     debugger
-    const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key;
-    const model_key = JSON.parse(localStorage.getItem("user"))?.model_key;
-    const model_password = JSON.parse(localStorage.getItem("user"))?.model_password;
-    const  intermitent_key = encrypt( model_key, model_password).encrypted
-    const master_key = decrypt(intermitent_key, headset_key)
-    let encrptFirstName = encrypt(master_key, ctx.firstName).encrypted
-    let encrptPhoneNo = encrypt(master_key, ctx.phoneNo).encrypted
-    
-    const requestBody = {
-      full_name: encrptFirstName,
-      phone_no: encrptPhoneNo,
-      userId: selectedUser._id,
-    };
-    
-    const { isError, message } = await usersService.editUsers(requestBody);
-    if (!isError) {
-      toast.success(message);
-      setState({ right: false });
-      setSelectedUser("");
-      getUser();
-    } else {
-      toast.error(message);
-    }
+    // const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key || "c67340a2f71ea7c0e9f565899d5ad3e636e7ed299629e8af40cb4604735352705872996c5be73e542826d767c5174e20";
+    // const model_key = JSON.parse(localStorage.getItem("user"))?.model_key || "2ec322616861465c4dc07813598fe682";
+    // const model_password = JSON.parse(localStorage.getItem("user"))?.model_password || "e4cc4f327b12017b047f327114b0f7204ad19b7f090ea1ed03bc161e38032765";
+    // const  intermitent_key = encrypt( model_key, model_password).encrypted
+    // const master_key = decrypt(intermitent_key, headset_key)
+    // let encrptFirstName = encrypt(master_key, ctx?.firstName).encrypted
+    // let encrptPhoneNo = encrypt(master_key, ctx.phoneNo).encrypted
+
+    // const requestBody = {
+    //   full_name: encrptFirstName,
+    //   phone_no: encrptPhoneNo,
+    //   userId: selectedUser._id,
+    // };
+
+    // const { isError, message } = await usersService.editUsers(requestBody);
+    // if (!isError) {
+    //   toast.success(message);
+    //   setState({ right: false });
+    //   setSelectedUser("");
+    //   getUser();
+    // } else {
+    //   toast.error(message);
+    // }
   }
 
   //The deleteUser function deletes a user using the deleteUsers function from the usersService module. It takes a user ID as input, sends a request to the backend to delete the user, and updates the user list on success.
@@ -150,15 +161,9 @@ export default function Users() {
     handleCloseVerifyEmail();
   }
 
-  const headset_key = JSON.parse(localStorage.getItem("user"))?.headset_key;
-  const model_key = JSON.parse(localStorage.getItem("user"))?.model_key;
-  const model_password = JSON.parse(localStorage.getItem("user"))?.model_password;
-  const  intermitent_key = encrypt( model_key, model_password).encrypted
-  const master_key = decrypt(intermitent_key, headset_key)
- 
+
   //The getUser function retrieves the list of users from the backend using the getUsersList function from the usersService module. It takes the search value, page number, page size, sort order, and sort property as input, sends a request to the backend to retrieve the user list, and updates the users and rowsCount state variables on success.
-  const getUser = () => {
-    debugger
+  const getUser = () => {    
     usersService
       .getUsersList(search, page, pageSize, order, sort)
       .then((res) => {
@@ -197,11 +202,11 @@ export default function Users() {
       sortable: false,
       renderCell: ({ row }: any) => {
         return (
-          !!row["model_key"] ? 
-          <Typography noWrap sx={{ textTransform: "capitalize" }}>
-            {decrypt(master_key, row["full_name"])}
-          </Typography> : 
-          "-"
+          !!row["model_key"] ?
+            <Typography noWrap sx={{ textTransform: "capitalize" }}>
+              {decrypt(master_key, row["full_name"])}
+            </Typography> :
+            "-"
         );
       },
     },
@@ -224,7 +229,7 @@ export default function Users() {
         return (
           !!row["model_key"] ? <Typography noWrap sx={{ textTransform: "capitalize" }}>
             {decrypt(master_key, row["phone_no"])}
-          </Typography>  : "-"
+          </Typography> : "-"
         );
       },
     },
@@ -340,9 +345,9 @@ export default function Users() {
                 }
               }}
               sx={{ cursor: "pointer", marginRight: 2 }}
-            > 
+            >
               <EditIcon color={row["is_delete"] ? "disabled" : "primary"} />
-            </Box> :  <EditOff /> }
+            </Box> : <EditOff />}
 
             <Box
               onClick={() => {
@@ -412,7 +417,7 @@ export default function Users() {
   useEffect(() => {
     const token = localStorage.getItem("user");
     if (!token) {
-      window.location.reload();
+      // window.location.reload();
       navigate("/", { replace: true });
     }
     getUser();
@@ -446,11 +451,11 @@ export default function Users() {
       >
         <>
           {isLoading ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <CircularProgress />
+            <Box data-testid="loading-spinner" sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress  />
             </Box>
           ) : (
-            <>
+            <div data-testid="user-datagrid">
               <Box display={"flex"} marginBottom={3} justifyContent={"end"}>
                 <SearchBar
                   iconClick={() => {
@@ -472,6 +477,7 @@ export default function Users() {
               </Box>
               <DataGrid
                 autoHeight
+
                 rows={users}
                 rowCount={rowsCount}
                 checkboxSelection={false}
@@ -497,7 +503,7 @@ export default function Users() {
                   setOrder(data[0]?.sort === "asc" ? 1 : -1);
                 }}
               />
-            </>
+            </div>
           )}
         </>
       </SectionContainer>
@@ -520,7 +526,7 @@ export default function Users() {
             aria-describedby="modal-modal-description"
             id="add-user-modal"
           >
-            <VerifyEmailAdmin onSuccessClose={handleClose}/>
+            <VerifyEmailAdmin onSuccessClose={handleClose} />
           </Modal>
         )
       }
@@ -565,7 +571,7 @@ export default function Users() {
             aria-describedby="modal-modal-description"
             id="add-user-modal"
           >
-            <VerifyEmailAdmin onSuccessClose={handleClose}/>
+            <VerifyEmailAdmin onSuccessClose={handleClose} />
           </Modal>
         )
       }

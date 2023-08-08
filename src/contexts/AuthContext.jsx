@@ -96,8 +96,8 @@ export function AuthProvider({ children }) {
       localStorage.setItem(
         "verification_details",
         JSON.stringify({
-          login_company_id: res.data.companyId,
-          login_user_id: res.data._id,
+          login_company_id: res.data?.companyId,
+          login_user_id: res.data?._id,
           ...res.data
         })
       );
@@ -115,7 +115,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem(
       "verification_details",
       JSON.stringify({
-        login_company_id: res.data.companyId._id,
+        login_company_id: res.data?.companyId._id,
         login_user_id: res.data._id,
         ...res.data
       })
@@ -222,7 +222,7 @@ export function AuthProvider({ children }) {
   // it sets profile image of user & admin locally
   const getProfile = async (userData) => {
     const data = await settingsService.getProfile(
-      userData.companyId._id,
+      userData?.companyId._id,
       "company"
     );
     const userProfile = await settingsService.getProfile(userData._id, "user");

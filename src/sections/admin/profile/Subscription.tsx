@@ -182,7 +182,7 @@ export default function SubscriptionForm(props) {
   useEffect(() => {
     const users = localStorage.getItem("user");
     if (!users) {
-      window.location.reload();
+      // window.location.reload();
       navigate("/", { replace: true });
     }
     getAdminDetails();

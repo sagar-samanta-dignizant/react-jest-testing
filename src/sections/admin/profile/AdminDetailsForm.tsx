@@ -26,7 +26,7 @@ export default function AdminDetailsForm(props) {
   useEffect(() => {
     const users = localStorage.getItem('user')
     if (!users) {
-      window.location.reload();
+      // window.location.reload();
       navigate("/", { replace: true })
     }
     getAdminDetails();
@@ -55,8 +55,8 @@ export default function AdminDetailsForm(props) {
   // get profile image for admin 
   const getProfile = async () => {
     const formData = new FormData()
-    formData.append('companyId', user.companyId)
-    const profile: any = await settingsService.getAdminPicture(user.companyId._id, "company");
+    formData.append('companyId', user?.companyId)
+    const profile: any = await settingsService.getAdminPicture(user?.companyId?._id, "company");
     setImage(profile);
   };
 

@@ -29,7 +29,7 @@ export default function VerifyEmail(props) {
     <>
       <Box title="Password" sx={style}>
         <Spacer>
-          <Title id="verify-password">Verify Admin Password</Title>
+          <Title id="verify-password" data-testid="verify-password">Verify Admin Password</Title>
           <Divider />
           <Spacer>
             <TextField
@@ -40,7 +40,7 @@ export default function VerifyEmail(props) {
               onChange={onInputChange}
               required
             />
-            <Button variant="contained" onClick={() => onAddPassword({ password, customer_id: selectedUser._id })}>
+            <Button data-testid="verify-admin-password" variant="contained" onClick={() => onAddPassword({ password, customer_id: selectedUser._id })}>
               verify Admin Password
             </Button>
           </Spacer>

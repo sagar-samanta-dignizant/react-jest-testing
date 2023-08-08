@@ -24,16 +24,16 @@ import {
 import { ADMIN_ROUTES, USER_ROUTES } from '../config/routes.config'
 import { getRole } from '../hooks/commonFunction'
 import { ELogoSizes, TSidebarItemsProps, TSidebarListItems } from '../types'
-import Logo from './Logo'
+import Logo from './Logo';
 
-const openedMixin = (theme: Theme): CSSObject => ({
+const openedMixin = (theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-})
+});
 //This component that renders a sidebar for the application. It uses styled-components to define the styles of the components used in the sidebar
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
@@ -45,7 +45,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 12px)`,
   },
-})
+});
 
 //The sidebar has a drawer component that can be opened or closed, and it contains a header with a logo and a menu icon that can toggle the drawer's state.
 const Drawer = styled(MuiDrawer, {
@@ -63,14 +63,14 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     '& .MuiDrawer-paper': closedMixin(theme),
   }),
-}))
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   ...theme.mixins.toolbar,
-}))
+}));
 
 //The sidebar has two sets of routes, one for the admin role and another for the user role, which are stored in separate arrays. 
 function Sidebar(props: TSidebarItemsProps) {

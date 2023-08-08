@@ -44,7 +44,7 @@ export default function Models() {
     const users = localStorage.getItem('user')
     if(!users)
     {
-      window.location.reload();
+      // window.location.reload();
       navigate("/",{replace: true})
     }
     modalData()

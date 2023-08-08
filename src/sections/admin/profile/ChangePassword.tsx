@@ -33,7 +33,7 @@ export default function ChangePasswordForm(props) {
     const users = localStorage.getItem('user')
     if(!users)
     {
-      window.location.reload();
+      // window.location.reload();
       navigate("/",{replace: true})
     }
   })

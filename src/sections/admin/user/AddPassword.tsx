@@ -16,7 +16,7 @@ const style = {
 
 export default function AddPassword(props) {
   const { onAddPassword, selectedUser } = props
-  const [password, setPasswordValue] = useState([])
+  const [password, setPasswordValue] = useState("")
   
   const onInputChange = (e) => {
     const currentPassword = e.target.value
@@ -34,10 +34,11 @@ export default function AddPassword(props) {
             <TextField
               name="password"
               label="Password"
-              type="password"
+              type="password"              
               placeholder="Enter Your Password"
               onChange={onInputChange}
               required
+              value={password}
             />
             <Button variant="contained" onClick={() => onAddPassword({ password, customer_id: selectedUser._id })}>
               Create Headset Key

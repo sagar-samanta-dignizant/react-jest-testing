@@ -28,8 +28,8 @@ export default function CompanyDetailsFormBk(props: any) {
   // sets image in company detail page
   const getProfile = async () => {
     const formData = new FormData()
-    formData.append('companyId', user.companyId)
-    const profile = await settingsService.getProfile(user.companyId?._id, "company");
+    formData.append('companyId', user?.companyId)
+    const profile = await settingsService.getProfile(user?.companyId?._id, "company");
     setImage(profile);
   };
 
@@ -113,7 +113,7 @@ export default function CompanyDetailsFormBk(props: any) {
     // formData.append('company_country', encrptCompanyCountry)
     // formData.append('company_postal_code', encrptCompanyPostalCode)
     delete data.companyname;
-    delete data.companyId;
+    delete data?.companyId;
     const { isError, message } = await settingsService.editCompanyDetails(
       requestBody,
     )
@@ -128,7 +128,7 @@ export default function CompanyDetailsFormBk(props: any) {
     debugger
     const formdata = new FormData();
     formdata.append("companyFile", data[0]);
-    console.log(data);
+    // console.log(data);
     const { isError, message } = await settingsService.updateAdminProfile(
       formdata
     );
@@ -151,7 +151,7 @@ export default function CompanyDetailsFormBk(props: any) {
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <FormInputField
             name="companyname"
-            label="company name "
+            label="company name"
             type="text"
             placeholder="company name"
             required

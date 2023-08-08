@@ -31,8 +31,8 @@ export default function AddUser(props) {
           <Divider />
           <Spacer>
             <Grid container spacing={2}>
-              {emailValue.slice(0, 9).map((obj) => (
-                <Grid item>
+              {emailValue.slice(0, 9).map((obj, index) => (
+                <Grid item key={index}>
                   <Chip label={obj} />
                 </Grid>
               ))}
@@ -48,6 +48,7 @@ export default function AddUser(props) {
               type="text"
               placeholder="Email"
               onChange={onInputChange}
+              
             />
             <Button variant="contained" onClick={() => onAddUser(emailValue)}>
               Send Link

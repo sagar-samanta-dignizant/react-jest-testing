@@ -45,7 +45,7 @@ export default function UserInfo(props) {
     debugger
     const user = JSON.parse(localStorage.getItem('user'))
      if(!user){
-      window.location.reload();
+      // window.location.reload();
       navigate("/", { replace: true });
      }
     // if (props.selectedId && props.selectedId !== '') {

@@ -27,7 +27,7 @@ const style = {
  
  
   // this function helps to update subscription updating on behalf of yes or no page.
-export default function VerifyDelete(props) {
+export default function VerifyEmailAdmin(props) {
    const [page, setPage] = React.useState();
     const theme = useTheme()
    
@@ -47,10 +47,9 @@ export default function VerifyDelete(props) {
       })
       
     const handleChange = (otp: IOtpData) => {
-        setValue('otp', otp)
+        methods?.setValue('otp', otp)
       }
 
-    const { handleSubmit, setValue, watch } = methods
 
     const onSubmit = async (otp) => {
       debugger
@@ -77,18 +76,19 @@ export default function VerifyDelete(props) {
   return (
     <>
       <Box title="Users" sx={style}>
-       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+       <FormProvider methods={methods} onSubmit={methods?.handleSubmit(onSubmit)}>
       <Spacer>
         <OtpInput
-          value={watch('otp')}
+          value={methods?.watch('otp')}
           onChange={handleChange}
           numInputs={6}
           className= "otpForm"
+          data-testid='otp-input'
           inputStyle={{
             width: ' 2em',
             height: ' 2em',
             textAlign: 'center',
-            border: `2px solid ${theme.palette.primary.main}`,
+            border: `2px solid ${theme?.palette?.primary?.main}`,
             borderRadius: '5px',
             fontSize: '20px',
           }}

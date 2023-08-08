@@ -41,7 +41,7 @@ function VerifyEmail() {
             width: ' 2em',
             height: ' 2em',
             textAlign: 'center',
-            border: `2px solid ${theme.palette.primary.main}`,
+            border: `2px solid ${theme?.palette?.primary?.main}`,
             borderRadius: '5px',
             fontSize: '20px',
           }}
