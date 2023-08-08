@@ -95,13 +95,13 @@ function Sidebar(props: TSidebarItemsProps) {
       name: `Home`,
       path: ADMIN_ROUTES.root,
       displayDot: displayDot,
-      icon: <IconHome color={theme.palette.primary.main} size={ICON_SIZE} />,
+      icon: <IconHome color={theme?.palette?.primary?.main} size={ICON_SIZE} />,
       className: 'home',
     },
     {
       name: 'Users',
       path: ADMIN_ROUTES.users,
-      icon: <IconUsers color={theme.palette.primary.main} size={ICON_SIZE} />,
+      icon: <IconUsers color={theme?.palette?.primary?.main} size={ICON_SIZE} />,
       className: 'users',
     },
     {
@@ -109,7 +109,7 @@ function Sidebar(props: TSidebarItemsProps) {
       path: ADMIN_ROUTES.adminProfile,
       icon: (
         <IconAdminSettings
-          color={theme.palette.primary.main}
+          color={theme?.palette?.primary?.main}
           size={ICON_SIZE}
         />
       ),
@@ -118,7 +118,7 @@ function Sidebar(props: TSidebarItemsProps) {
     {
       name: 'Models',
       path: ADMIN_ROUTES.models,
-      icon: <IconModel color={theme.palette.primary.main} size={ICON_SIZE} />,
+      icon: <IconModel color={theme?.palette?.primary?.main} size={ICON_SIZE} />,
       className: 'models', 
     },
   ]
@@ -129,7 +129,7 @@ function Sidebar(props: TSidebarItemsProps) {
       path: USER_ROUTES.root,
       icon: (
         <IconAdminSettings
-          color={theme.palette.primary.main}
+          color={theme?.palette?.primary?.main}
           size={ICON_SIZE}
         />
       ),
@@ -138,7 +138,7 @@ function Sidebar(props: TSidebarItemsProps) {
     {
       name: 'Models',
       path: USER_ROUTES.models,
-      icon: <IconModel color={theme.palette.primary.main} size={ICON_SIZE} />,
+      icon: <IconModel color={theme?.palette?.primary?.main} size={ICON_SIZE} />,
       id: 'models',
     },
   ]
@@ -156,54 +156,56 @@ function Sidebar(props: TSidebarItemsProps) {
   }, [])
   //The component triggers the display of a dot on the corresponding item in the list if a new notification is received.
   return (
-    
-      <Drawer
-        variant="permanent"
-        open={open}
-        PaperProps={{
-          sx: {
-            backgroundColor: (theme) => theme.palette.background.default,
-            color: (theme) => theme.palette.background.default,
-          },
-        }}
-      >
-        <DrawerHeader  >
-          <Logo size={ELogoSizes.small} />
-        <IconButton onClick={onStateChange} id="sidebar-menu-icon">
-            <IconMenu color={theme.palette.primary.main}  />
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {routes[role].map((item: TSidebarListItems, index: number) => (
-            <ListItem key={index}>
-              <ListItemButton
-                onClick={() => navigate(item.path)}
-                selected={path === item.path}
-                style={{
-                  borderRadius: theme.shape.borderRadius,
-                }}
-                id={item.id}
-              >
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                {item.displayDot && (
-                  <Badge variant="dot" color="warning">
-                    <ListItemText primary={item.name} />
-                  </Badge>
-                )}
-                {!item.displayDot && (
-                  <ListItemText
-                    primary={item.name}
-                    secondary={item.displayDot && '*'}
-                  ></ListItemText>
-                )}
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-   
-    
+    <Drawer
+      data-testid="sidebar"
+      variant="permanent"
+      open={open}
+      PaperProps={{
+        sx: {
+          backgroundColor: (theme) => theme.palette.background.default,
+          color: (theme) => theme.palette.background.default,
+        },
+      }}
+    >
+      <DrawerHeader  >
+        <Logo size={ELogoSizes.small} />
+        <IconButton
+          onClick={onStateChange}
+          id="sidebar-menu-icon"
+          data-testid="menu-icon"
+        >
+          <IconMenu color={theme?.palette?.primary?.main} />
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
+      <List>
+        {routes[role].map((item: TSidebarListItems, index: number) => (
+          <ListItem key={index}>
+            <ListItemButton
+              onClick={() => navigate(item.path)}
+              selected={path === item.path}
+              style={{
+                borderRadius: theme.shape.borderRadius,
+              }}
+              id={item.id}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              {item.displayDot && (
+                <Badge variant="dot" color="warning" data-testid="notification-dot">
+                  <ListItemText primary={item.name} />
+                </Badge>
+              )}
+              {!item.displayDot && (
+                <ListItemText
+                  primary={item.name}
+                  secondary={item.displayDot && "*"}
+                ></ListItemText>
+              )}
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Drawer>
   )
 }
 

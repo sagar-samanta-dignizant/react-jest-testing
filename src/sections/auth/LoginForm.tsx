@@ -1,5 +1,5 @@
 import { IconButton, InputAdornment, useTheme } from '@mui/material'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../component'
@@ -15,12 +15,12 @@ import {
 import { AUTH_ROUTES } from '../../config/routes.config'
 import { useAuth } from '../../hooks/useAuth'
 
-import { loginSchema } from '../../schema'
-import { ILoginFormData } from '../../types'
+import { yupResolver } from '@hookform/resolvers/yup'
 import FormCheckbox from '../../component/Form/FormCheckbox'
 import Spacer from '../../component/Spacer'
+import { loginSchema } from '../../schema'
+import { ILoginFormData } from '../../types'
 import { defaultValuesLogin } from './DefaultFormData'
-import { yupResolver } from '@hookform/resolvers/yup'
 
 //this form consists for multiple hooks and method like navigate use for navigation auth to use login data which is degined on another page
 function LoginForm() {
@@ -49,7 +49,7 @@ function LoginForm() {
     errors[fieldname] ? theme.palette.error.light : theme.palette.primary.main
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider data-testId='login-form' methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Spacer>
       <FormInputField
           name="Companyname"
@@ -125,6 +125,7 @@ function LoginForm() {
         </Button>
         <Button
           onClick={() => navigate(AUTH_ROUTES.forgetPassword)}
+          data-testid="forget-password-button"
           id="resetPasswordBtn"
           className="email-helper-text"
         >
@@ -133,6 +134,7 @@ function LoginForm() {
         <Button
           onClick={() => navigate(AUTH_ROUTES.NewUser)}
           id="registerNewUser"
+          test-dataId='registerNewUser'
           className="email-helper-text"
         >
           Register as new Company

@@ -42,7 +42,7 @@ export default function ResetPassword() {
     setValue,
   } = methods
   const isError = (fieldname: string) =>
-    errors[fieldname] ? theme.palette.error.light : theme.palette.primary.main
+    errors[fieldname] ? theme?.palette?.error?.light : theme?.palette?.primary?.main
 
   //The useEffect hook is used to parse the query string from the URL and extract the company ID and admin ID values. The onSubmit function is used to handle the form submission and calls the authService.resetPassword function to reset the user's password.
   useEffect(() => {
@@ -159,6 +159,7 @@ export default function ResetPassword() {
           fullWidth
           type="submit"
           sx={{ marginTop: '15px' }}
+          data-testId='password-icon-button'
           id="reset-password"
         >
           Reset Password

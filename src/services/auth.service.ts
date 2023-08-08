@@ -207,10 +207,10 @@ class AuthService {
     if (response.status === 200) {
       return {
         isError: false,
-        message: res.message,
+        message: res.message || "Failed",
       };
     } else {
-      return { isError: true, message: res.message };
+      return { isError: true, message: res.message  || "Failed" };
     }
   }
 }

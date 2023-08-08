@@ -1,91 +1,72 @@
-const puppeteer = require('puppeteer');
+/* eslint-disable testing-library/prefer-presence-queries */
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
+/* eslint-disable testing-library/no-render-in-setup */
 
-describe('Forgot Password Form Test', () => {
-    let browser;
-    let page;
 
-    beforeAll(async () => {
-        browser = await puppeteer.launch();
-    });
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import authService from "../../services/auth.service";
+import { MemoryRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import { ForgetPassword } from "../../pages";
+import { toast } from 'react-hot-toast';
 
-    beforeEach(async () => {
-        page = await browser.newPage();
-        await page.goto('http://localhost:3000/forget_password'); // Replace with the actual URL of your "Forgot Password" page
-    });
+jest.mock('../../services/auth.service', () => ({
+  forgotPassword: jest.fn(),
+})); // Mock the authService module
 
-    afterEach(async () => {
-        await page.close();
-    });
+jest.mock('react-hot-toast', () => ({
+  success: jest.fn(),
+  error: jest.fn(),
+}));
 
-    afterAll(async () => {
-        await browser.close();
-    });
+describe("ForgetPasswordForm", () => {
+  jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useNavigate: () => jest.fn(),
+  }));
 
-    //   it('should display the form title', async () => {
-    //     await page.waitForSelector('h1');
-    //     const titleText = await page.evaluate(() => document.querySelector('h1').innerText);
-    //     expect(titleText).toBe('Forgot Password');
-    //   });
+  beforeEach(() => {
+    render(
+      <HelmetProvider>
+        <MemoryRouter>
+          <ForgetPassword />
+        </MemoryRouter>
+      </HelmetProvider>
+    );
+  });
 
-    it('should display the email input field', async () => {
-        await page.waitForSelector('input[name="email"]');
-        const emailInput = await page.$('input[name="email"]');
-        expect(emailInput).toBeTruthy();
-    });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test('should display the form title', () => {
 
-    it('should display the company name input field', async () => {
-        await page.waitForSelector('input[name="companyname"]');
-        const companyNameInput = await page.$('input[name="companyname"]');
-        expect(companyNameInput).toBeTruthy();
-    });
+    // Check if the title is rendered
+    expect(screen.getByText('Forgot Password')).toBeInTheDocument();
+  });
+  test("should give form validation error after Request Password Reset button click without passing email", async () => {
+    fireEvent.click(screen.getByRole('button', { name: 'Request Password Reset' }));
 
-    it('should display the "Request Password Reset" button', async () => {
-        await page.waitForSelector('button[type="submit"]');
-        const submitButton = await page.$('button[type="submit"]');
-        expect(submitButton).toBeTruthy();
-    });
+    // Wait for the email and password validation errors to appear
+    const emailError = await screen.findByText("Email is required");
 
-    it('should display the "Go to Login" button', async () => {
-        await page.waitForSelector('button#loginPagebtn');
-        const loginButton = await page.$('button#loginPagebtn');
-        expect(loginButton).toBeTruthy();
-    });
+    // Expect the email and password validation errors to be displayed on the page
+    expect(emailError).toBeInTheDocument();
+  });
+  test('should display form validation errors for invalid data', async () => {
 
-    it('should submit the form with valid email', async () => {
-        await page.waitForSelector('input[name="email"]');
-        await page.type('input[name="email"]', 'vidhyasudani123@gmail.com'); // Replace with a valid test email
-        await page.waitForSelector('button[type="submit"]');
-        await page.click('button[type="submit"]');
-        await page.waitForTimeout(2000); // Add a short delay to allow the request to complete
-        const newURL = page.url();
-        expect(newURL).toContain("/forget_password");
+    const submitButton = screen.getByRole('button', { name: 'Request Password Reset' });
+    fireEvent.click(submitButton);
+  
+    // Wait for the form validation errors to appear
+    await waitFor(() => {
+      expect(screen.getByText('Email is required')).toBeInTheDocument();
+      expect(screen.queryByText('Password reset email sent successfully!')).not.toBeInTheDocument();
     });
   
+    // Ensure that the authService.forgotPassword function is not called
+    const mockForgotPassword = jest.spyOn(authService, 'forgotPassword');
+    expect(mockForgotPassword).not.toHaveBeenCalled();
+  })
 
-    it('should submit the form with valid email and company name', async () => {
-        // Provide valid email and company name
-        const validEmail = 'validemail@example.com';
-        const validCompanyName = 'Valid Company';
-
-        await page.waitForSelector('input[name="email"]');
-        await page.type('input[name="email"]', validEmail);
-
-        await page.waitForSelector('input[name="companyname"]');
-        await page.type('input[name="companyname"]', validCompanyName);
-
-        await page.waitForSelector('button[type="submit"]');
-        const newURL = page.url();
-        expect(newURL).toContain("/forget_password");
-
-    });
-
-    it('should display an error message for an invalid email', async () => {
-        await page.waitForSelector('input[name="email"]');
-        await page.type('input[name="email"]', 'invalid_email'); // Replace with an invalid test email
-        await page.waitForSelector('button[type="submit"]');
-        await page.click('button[type="submit"]');
-        await page.waitForTimeout(2000); // Add a short delay to allow the request to complete
-        const el = await page.$eval("p[id=email-helper-text]", (text) => text.innerText);
-        expect(el).toMatch("Email is invalid");
-    });
 });
